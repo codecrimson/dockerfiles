@@ -1,0 +1,8 @@
+sudo docker build -t jenkins .
+
+sudo docker stop $(sudo docker ps -a -q) && sudo docker rm $(sudo docker ps -a -q)
+
+sudo docker run --restart=unless-stopped --name MONGODB -d mongo
+sudo docker run --restart=unless-stopped --link MONGODB:mongo -v jenkins_home:/var/jenkins_home -p 8080:8080 -p 50000:50000 --name=JENKINS -d jenkins
+
+MONGODB_URI=mongodb://MONGODB
